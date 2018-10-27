@@ -1,9 +1,12 @@
 <template>
   <div class="rdx-autocomplete">
-    <input type="search" v-model="text" @input="onChange" />
+    <input type="search" v-model="text" @input="onChange" @focus="onFocus" @blur="onBlur"
+      @keydown.up="onKeyUp" @keydown.down="onKeyDown"/>
     <List v-bind:items="filteredItems"
       v-bind:label-field="labelField"
-      v-bind:label-function="labelFunction"/>
+      v-bind:label-function="labelFunction"
+      v-bind:listclass="listClass"
+      v-bind:selected-index="selectedIndex"/>
   </div>
 </template>
 
@@ -26,6 +29,18 @@ export default {
       this.filter(this.text.toLowerCase());
       this.$emit('change');
     },
+    onFocus() {
+      this.listClass = 'open';
+    },
+    onBlur() {
+      this.listClass = '';
+    },
+    onKeyUp() {
+      this.selectedIndex = Math.max(0, this.selectedIndex - 1);
+    },
+    onKeyDown() {
+      this.selectedIndex = Math.min(this.filteredItems.length - 1, this.selectedIndex + 1);
+    },
     filter(text) {
       if (text) {
         const filterFunction = this.filterFunction || this.itemFilter;
@@ -45,24 +60,41 @@ export default {
       filteredItems: this.items || [],
       isOpen: false,
       text: '',
+      listClass: '',
+      selectedIndex: -1,
     };
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="postcss">
 .rdx-autocomplete {
-  display: block;
-}
+  @apply .relative;
 
-input {
-  outline: none;
-  border-radius: 0.25rem;
-  border-style: solid;
-  border-color: #5433be;
-  border-width: 1px;
-  padding: 0.5rem;
-  width: 100%;
+  display: block;
+
+  input {
+    outline: none;
+    border-radius: 0.25rem;
+    border-style: solid;
+    border-color: #5433be;
+    border-width: 2px;
+    padding: 0.5rem;
+    width: 100%;
+  }
+
+  .rdx-list {
+    @apply .absolute .pin-l .pin-r;
+
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: 300ms all;
+    &.open {
+      max-height: 100vh;
+      opacity: 1;
+    }
+  }
 }
 </style>

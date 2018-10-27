@@ -1,7 +1,7 @@
 <template>
-  <ul class="rdx-list">
-    <li v-for="item in items"
-      v-bind:key="item.id">
+  <ul class="rdx-list" :class="listclass">
+    <li v-for="(item, i) in items"
+      v-bind:key="item.id" :class="{'selected': selectedIndex === i}">
         {{ computeLabel(item) }}
     </li>
   </ul>
@@ -12,9 +12,11 @@ export default {
   name: 'Autocomplete',
   props: {
     items: { default: () => [] },
+    listclass: { type: String, default: '' },
     labelField: { type: String, default: 'label' },
     labelFunction: { type: Function,
       default: null },
+    selectedIndex: { type: Number, default: -1 },
   },
   methods: {
     computeLabel(item) {
@@ -37,22 +39,25 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="postcss" scoped>
 ul {
-  @apply .px-2 .pt-2 .-mt-2;
+  @apply .px-2 .pt-2 .mt-1 .rounded .shadow-lg;
   list-style-type: none;
   background: white;
   display: block;
-  border: 1px solid #5433be;
-  border-top: 0;
+  border: 2px solid #5433be;
 
   li {
     @apply .p-2;
-    border-bottom: 1px solid #5433be;
+    border-bottom: 2px solid #5433be;
     background: white;
     color: black;
     text-align: left;
 
     &:last-child {
       border-bottom: 0;
+    }
+
+    &.selected {
+      @apply .font-medium .bg-purple-lightest;
     }
   }
 }

@@ -76,13 +76,13 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1,
-h2 {
+<style scoped lang="postcss">
+h1 {
   font-weight: normal;
 }
+
 .rdx-autocomplete {
-  width: 50%;
+  @apply .mt-4;
 }
 </style>
 

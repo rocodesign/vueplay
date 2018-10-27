@@ -7,14 +7,11 @@
 
 <script>
 import RecipientSelector from './components/RecipientSelector';
-// import Autocomplete from './ui-components/Autocomplete';
-import List from './ui-components/List';
 
 export default {
   name: 'App1',
   components: {
     RecipientSelector,
-    List,
   },
 
 };
@@ -22,20 +19,19 @@ export default {
 
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-}
-
-.pr-1 {
-  padding-top: 1rem;
 }
 </style>
 
 <style lang="postcss">
 @import "./styles.css";
+
+#app {
+  @apply .w-full .h-full .p-16 .pt-32;
+}
 </style>
 
