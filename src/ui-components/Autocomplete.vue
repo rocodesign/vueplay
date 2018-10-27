@@ -26,7 +26,6 @@ export default {
   },
   methods: {
     onChange() {
-      this.filter(this.text.toLowerCase());
       this.$emit('change');
     },
     onFocus() {
@@ -36,28 +35,33 @@ export default {
       this.listClass = '';
     },
     onKeyUp() {
-      this.selectedIndex = Math.max(0, this.selectedIndex - 1);
+      this.selectedIndex = ((this.selectedIndex - 1) + this.itemNo) % this.itemNo;
     },
     onKeyDown() {
-      this.selectedIndex = Math.min(this.filteredItems.length - 1, this.selectedIndex + 1);
+      this.selectedIndex = (this.selectedIndex + 1) % this.itemNo;
     },
-    filter(text) {
-      if (text) {
-        const filterFunction = this.filterFunction || this.itemFilter;
-        this.filteredItems = this.items.filter(item => filterFunction(item, text));
-      } else {
-        this.filteredItems = this.items;
-      }
-    },
+
     itemFilter(item, text) {
       return !!Object.values(item).find(val =>
         typeof val === 'string' &&
         val.toLowerCase().indexOf(text) >= 0);
     },
   },
+  computed: {
+    filteredItems() {
+      if (this.text) {
+        const text = this.text.toLowerCase();
+        const filterFunction = this.filterFunction || this.itemFilter;
+        return this.items.filter(item => filterFunction(item, text));
+      }
+      return this.items;
+    },
+    itemNo() {
+      return this.filteredItems.length;
+    },
+  },
   data() {
     return {
-      filteredItems: this.items || [],
       isOpen: false,
       text: '',
       listClass: '',
