@@ -6,7 +6,8 @@
       v-bind:label-field="labelField"
       v-bind:label-function="labelFunction"
       v-bind:listclass="listClass"
-      v-bind:selected-index="selectedIndex"/>
+      v-bind:selected-index="selectedIndex"
+      @selected="onItemSelected"/>
   </div>
 </template>
 
@@ -31,7 +32,7 @@ export default {
     },
     onFocus() {
       this.searchText = '';
-      this.listClass = 'open';
+      this.listOpen = true;
     },
     onBlur() {
       this.closeList();
@@ -43,24 +44,28 @@ export default {
       this.selectedIndex = (this.selectedIndex + 1) % this.itemNo;
     },
     onKeyEnter() {
+      if (!this.listOpen) {
+        this.listOpen = true;
+        return;
+      }
+      let item;
       if (this.selectedIndex >= 0) {
-        this.selectedItem = this.filteredItems[this.selectedIndex];
+        item = this.filteredItems[this.selectedIndex];
       } else if (this.itemNo === 1) {
-        this.selectedItem = this.filteredItems[0];
+        item = this.filteredItems[0];
       }
-      if (this.selectedItem) {
-        this.text = this.computeLabel(this.selectedItem);
-        this.$emit('selected', this.selectedItem);
+      this.onItemSelected(item);
+    },
+    onItemSelected(item) {
+      if (item) {
+        this.text = this.computeLabel(item);
+        this.$emit('selected', item);
       }
-      if (this.listClass) {
-        this.closeList();
-      } else {
-        this.onFocus();
-      }
+      this.listOpen = false;
     },
     closeList() {
       this.selectedIndex = -1;
-      this.listClass = '';
+      this.listOpen = false;
     },
     itemFilter(item, text) {
       return !!Object.values(item).find(val =>
@@ -86,13 +91,16 @@ export default {
     itemNo() {
       return this.filteredItems.length;
     },
+    listClass() {
+      return this.listOpen ? 'open' : '';
+    },
   },
   data() {
     return {
       isOpen: false,
       text: '',
       searchText: '',
-      listClass: '',
+      listOpen: false,
       selectedIndex: -1,
       selectedItem: null,
     };

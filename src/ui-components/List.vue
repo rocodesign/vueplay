@@ -1,7 +1,9 @@
 <template>
   <ul class="rdx-list" :class="listclass">
     <li v-for="(item, i) in items"
-      v-bind:key="item.id" :class="{'selected': selectedIndex === i}">
+      v-bind:key="item.id"
+      @click="onClickItem(item)"
+      :class="{'selected': selectedIndex === i}">
         {{ computeLabel(item) }}
     </li>
   </ul>
@@ -25,13 +27,13 @@ export default {
       }
       return item[this.labelField];
     },
+    onClickItem(item) {
+      this.$emit('selected', item);
+    },
   },
   computed: {},
   data() {
-    return {
-      something: '',
-
-    };
+    return {};
   },
 };
 </script>
@@ -57,7 +59,11 @@ ul {
     }
 
     &.selected {
-      @apply .font-medium .bg-purple-lightest;
+      @apply .font-medium .bg-purple-lighter;
+    }
+
+    &:hover {
+      @apply .bg-purple-lightest;
     }
   }
 }
