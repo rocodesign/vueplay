@@ -7,6 +7,7 @@
       v-bind:label-function="labelFunction"
       v-bind:listclass="listClass"
       v-bind:selected-index="selectedIndex"
+      v-bind:renderer="renderer"
       @selected="onItemSelected"/>
   </div>
 </template>
@@ -24,6 +25,7 @@ export default {
     labelField: { type: String, default: 'label' },
     labelFunction: { type: Function, default: null },
     filterFunction: { type: Function, default: null },
+    renderer: null,
   },
   methods: {
     onChange() {

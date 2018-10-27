@@ -4,7 +4,10 @@
       v-bind:key="item.id"
       @click="onClickItem(item)"
       :class="{'selected': selectedIndex === i}">
-        {{ computeLabel(item) }}
+        <span v-if="renderer">
+          <component :is="renderer" v-bind="item"/>
+        </span>
+        <span v-else>{{ computeLabel(item) }}</span>
     </li>
   </ul>
 </template>
@@ -19,6 +22,7 @@ export default {
     labelFunction: { type: Function,
       default: null },
     selectedIndex: { type: Number, default: -1 },
+    renderer: null,
   },
   methods: {
     computeLabel(item) {

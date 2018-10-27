@@ -3,20 +3,21 @@
     <h1>{{ msg }}</h1>
     <Autocomplete v-bind:items="contacts"
       v-bind:label-field="'alias'"
+      v-bind:renderer="ContactRenderer"
       v-bind:label-function="labelFunction"/>
   </div>
 </template>
 
 <script>
 
-import List from '../ui-components/List';
 import Autocomplete from '../ui-components/Autocomplete';
+import ContactRenderer from './ContactRenderer';
 
 export default {
-  name: 'RecipientSelector',
+  name: 'ContactSelector',
   components: {
-    List,
     Autocomplete,
+    ContactRenderer,
   },
   methods: {
     labelFunction(item) {
@@ -25,8 +26,8 @@ export default {
   },
   data() {
     return {
-      msg: 'Please select your recipient',
-
+      msg: 'Please select your address',
+      ContactRenderer,
       contacts: [
         {
           address: '9egHejbV2z1p1Luy2mER4BXsaHbyM67LdaLrUoJ9YSFRGCw1XPC',

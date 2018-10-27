@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <RecipientSelector />
+    <ContactSelector />
   </div>
 </template>
 
 <script>
-import RecipientSelector from './components/RecipientSelector';
+import ContactSelector from './components/ContactSelector';
 
 export default {
   name: 'App1',
   components: {
-    RecipientSelector,
+    ContactSelector,
   },
 
 };
