@@ -1,7 +1,7 @@
 <template>
   <div class="rdx-autocomplete">
     <input type="search" v-model="text" @input="onChange" @focus="onFocus" @blur="onBlur"
-      @keydown.up="onKeyUp" @keydown.down="onKeyDown"/>
+      @keydown.up="onKeyUp" @keydown.down="onKeyDown" @keydown.enter="onKeyEnter"/>
     <List v-bind:items="filteredItems"
       v-bind:label-field="labelField"
       v-bind:label-function="labelFunction"
@@ -26,13 +26,15 @@ export default {
   },
   methods: {
     onChange() {
-      this.$emit('change');
+      this.searchText = this.text;
+      this.$emit('change', this.text);
     },
     onFocus() {
+      this.searchText = '';
       this.listClass = 'open';
     },
     onBlur() {
-      this.listClass = '';
+      this.closeList();
     },
     onKeyUp() {
       this.selectedIndex = ((this.selectedIndex - 1) + this.itemNo) % this.itemNo;
@@ -40,17 +42,42 @@ export default {
     onKeyDown() {
       this.selectedIndex = (this.selectedIndex + 1) % this.itemNo;
     },
-
+    onKeyEnter() {
+      if (this.selectedIndex >= 0) {
+        this.selectedItem = this.filteredItems[this.selectedIndex];
+      } else if (this.itemNo === 1) {
+        this.selectedItem = this.filteredItems[0];
+      }
+      if (this.selectedItem) {
+        this.text = this.computeLabel(this.selectedItem);
+        this.$emit('selected', this.selectedItem);
+      }
+      if (this.listClass) {
+        this.closeList();
+      } else {
+        this.onFocus();
+      }
+    },
+    closeList() {
+      this.selectedIndex = -1;
+      this.listClass = '';
+    },
     itemFilter(item, text) {
       return !!Object.values(item).find(val =>
         typeof val === 'string' &&
         val.toLowerCase().indexOf(text) >= 0);
     },
+    computeLabel(item) {
+      if (this.labelFunction) {
+        return this.labelFunction(item);
+      }
+      return item[this.labelField];
+    },
   },
   computed: {
     filteredItems() {
-      if (this.text) {
-        const text = this.text.toLowerCase();
+      if (this.searchText) {
+        const text = this.searchText.toLowerCase();
         const filterFunction = this.filterFunction || this.itemFilter;
         return this.items.filter(item => filterFunction(item, text));
       }
@@ -64,8 +91,10 @@ export default {
     return {
       isOpen: false,
       text: '',
+      searchText: '',
       listClass: '',
       selectedIndex: -1,
+      selectedItem: null,
     };
   },
 };

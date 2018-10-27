@@ -39,7 +39,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="postcss" scoped>
 ul {
-  @apply .px-2 .pt-2 .mt-1 .rounded .shadow-lg;
+  @apply .px-2 .py-1 .mt-1 .rounded .shadow-lg;
   list-style-type: none;
   background: white;
   display: block;
