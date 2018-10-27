@@ -1,11 +1,11 @@
 // https://github.com/michael-ciniawsky/postcss-load-config
-
 module.exports = {
-  plugins: {
-    'postcss-import': {},
-    'postcss-nested': {},
-    'postcss-url': {},
+  plugins: [
+    require('postcss-import')(),
+    require('postcss-nested')(),
+    require('postcss-url')(),
+    require('tailwindcss')('./tailwind.js'),
     // to edit target browsers: use "browserslist" field in package.json
-    autoprefixer: {},
-  },
+    require('autoprefixer')(),
+  ],
 };

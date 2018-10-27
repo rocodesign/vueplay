@@ -37,22 +37,19 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="postcss" scoped>
 ul {
-  @apply .pr-1;
+  @apply .px-2 .pt-2 .-mt-2;
   list-style-type: none;
-  padding: 0;
-  margin: 0;
-  background: red;
+  background: white;
   display: block;
   border: 1px solid #5433be;
   border-top: 0;
 
   li {
-    padding: 5px;
+    @apply .p-2;
     border-bottom: 1px solid #5433be;
     background: white;
     color: black;
     text-align: left;
-    height: 25px;
 
     &:last-child {
       border-bottom: 0;

@@ -34,3 +34,8 @@ export default {
   padding-top: 1rem;
 }
 </style>
+
+<style lang="postcss">
+@import "./styles.css";
+</style>
+

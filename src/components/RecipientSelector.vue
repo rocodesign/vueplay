@@ -13,7 +13,7 @@ import List from '../ui-components/List';
 import Autocomplete from '../ui-components/Autocomplete';
 
 export default {
-  name: 'Radix Address Input',
+  name: 'RecipientSelector',
   components: {
     List,
     Autocomplete,
