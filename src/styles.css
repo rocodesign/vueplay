@@ -1,9 +1,41 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto);
 
-@tailwind preflight;
+/* @tailwind preflight; */
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
-  @apply .flex .justify-center;
+  @apply .flex .justify-center .w-full .h-full;
+}
+
+/*
+responsive rem under 768px
+*/
+@media only screen and (max-width: 768px) {
+  html {
+    font-size: 2vw;
+  }
+}
+
+/*
+generic styles
+*/
+.btn {
+  @apply .p-4 .bg-purple-dark .text-white .rounded .border-0;
+
+  outline: none;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+input {
+  @apply .border-solid .border-2 .rounded .p-2 .border-purple;
+
+  font-family: "Roboto", Helvetica, Arial, sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
 }

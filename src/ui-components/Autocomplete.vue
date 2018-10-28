@@ -1,5 +1,5 @@
 <template>
-  <div class="rdx-autocomplete">
+  <div class="rdx-autocomplete" :class="{dirty, valid, invalid: dirty && !valid}">
     <input type="search" v-model="text" @input="onChange" @focus="onFocus" @blur="onBlur"
       @keydown.up="onKeyUp" @keydown.down="onKeyDown" @keydown.enter="onKeyEnter"/>
     <List v-bind:items="filteredItems"
@@ -25,11 +25,15 @@ export default {
     labelField: { type: String, default: 'label' },
     labelFunction: { type: Function, default: null },
     filterFunction: { type: Function, default: null },
+    validator: { type: Function, default: data => !!data },
     renderer: null,
   },
   methods: {
     onChange() {
       this.searchText = this.text;
+      this.listOpen = true;
+      this.dirty = true;
+      this.selectedItem = null;
       this.$emit('change', this.text);
     },
     onFocus() {
@@ -60,6 +64,8 @@ export default {
     },
     onItemSelected(item) {
       if (item) {
+        this.dirty = true;
+        this.selectedItem = item;
         this.text = this.computeLabel(item);
         this.$emit('selected', item);
       }
@@ -94,12 +100,23 @@ export default {
       return this.filteredItems.length;
     },
     listClass() {
-      return this.listOpen ? 'open' : '';
+      return this.listOpen && this.itemNo ? 'open' : '';
+    },
+    valid() {
+      return this.dirty && this.validator(this.selectedItem || this.text);
+    },
+  },
+  watch: {
+    valid(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.$emit('valid-change', newValue);
+      }
     },
   },
   data() {
     return {
       isOpen: false,
+      dirty: false,
       text: '',
       searchText: '',
       listOpen: false,
@@ -119,19 +136,21 @@ export default {
 
   input {
     outline: none;
-    border-radius: 0.25rem;
-    border-style: solid;
-    border-color: #5433be;
-    border-width: 2px;
-    padding: 0.5rem;
     width: 100%;
   }
 
+  &.invalid {
+    input {
+      @apply .border-red;
+    }
+  }
+
   .rdx-list {
-    @apply .absolute .pin-l .pin-r;
+    @apply .absolute .pin-l .pin-r .z-50;
 
     max-height: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     opacity: 0;
     transition: 300ms all;
     &.open {

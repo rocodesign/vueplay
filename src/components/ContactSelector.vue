@@ -1,10 +1,16 @@
 <template>
-  <div class="root">
+  <div class="root" >
     <h1>{{ msg }}</h1>
-    <Autocomplete v-bind:items="contacts"
+    <Autocomplete
+      v-bind:items="contacts"
       v-bind:label-field="'alias'"
       v-bind:renderer="ContactRenderer"
-      v-bind:label-function="labelFunction"/>
+      v-bind:label-function="labelFunction"
+      v-bind:validator="validator"
+      @change="onAdressChange"
+      @selected="onSelectionChange"
+      v-on:valid-change="onValidChange"/>
+    <button class="btn mt-4" type="submit" :disabled="!valid">SEND</button>
   </div>
 </template>
 
@@ -23,11 +29,25 @@ export default {
     labelFunction(item) {
       return item.alias || item.address;
     },
+    onAdressChange(text) {
+      this.address = text;
+    },
+    onSelectionChange(item) {
+      this.address = item.address;
+    },
+    validator(item) {
+      const address = typeof item === 'string' ? item : item.address;
+      return address.length === 51;
+    },
+    onValidChange(valid) {
+      this.valid = valid;
+    },
   },
   data() {
     return {
-      msg: 'Please select your address',
+      msg: 'Please select recipient address',
       ContactRenderer,
+      valid: false,
       contacts: [
         {
           address: '9egHejbV2z1p1Luy2mER4BXsaHbyM67LdaLrUoJ9YSFRGCw1XPC',
@@ -71,6 +91,7 @@ export default {
         },
 
       ],
+      address: '',
     };
   },
 };
@@ -79,11 +100,26 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="postcss">
 h1 {
+  @apply .text-lg .w-full .text-left;
+
   font-weight: normal;
 }
 
-.rdx-autocomplete {
-  @apply .mt-4;
+.root {
+  @apply .flex-1 .mt-12 .text-right;
+
+  width: 32rem;
+  max-width: calc(100vw - 18rem);
+
+  .rdx-autocomplete {
+    @apply .mt-4;
+
+    >>> .rdx-list {
+      &.open {
+        max-height: calc(100vh - 450px);
+      }
+    }
+  }
 }
 </style>
 
