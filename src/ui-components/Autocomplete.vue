@@ -1,6 +1,7 @@
 <template>
   <div class="rdx-autocomplete" :class="{dirty, valid, invalid: dirty && !valid}">
-    <input type="search" v-model="text" @input="onChange" @focus="onFocus" @blur="onBlur"
+    <input type="search" v-model="text" @input="onChange" @focus="onFocus"
+      @click="onFocus" @blur="onBlur"
       @keydown.up="onKeyUp" @keydown.down="onKeyDown" @keydown.enter="onKeyEnter"/>
     <List
       ref="list"
