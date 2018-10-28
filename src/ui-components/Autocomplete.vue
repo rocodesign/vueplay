@@ -2,7 +2,9 @@
   <div class="rdx-autocomplete" :class="{dirty, valid, invalid: dirty && !valid}">
     <input type="search" v-model="text" @input="onChange" @focus="onFocus" @blur="onBlur"
       @keydown.up="onKeyUp" @keydown.down="onKeyDown" @keydown.enter="onKeyEnter"/>
-    <List v-bind:items="filteredItems"
+    <List
+      ref="list"
+      v-bind:items="filteredItems"
       v-bind:label-field="labelField"
       v-bind:label-function="labelFunction"
       v-bind:listclass="listClass"
@@ -45,13 +47,26 @@ export default {
     },
     onKeyUp() {
       this.selectedIndex = ((this.selectedIndex - 1) + this.itemNo) % this.itemNo;
+      this.scrollList();
     },
     onKeyDown() {
       this.selectedIndex = (this.selectedIndex + 1) % this.itemNo;
+      this.scrollList();
+    },
+    scrollList() {
+      const listel = this.$refs.list.$el;
+      const scrollPercent = this.selectedIndex / (this.itemNo - 1);
+      const scrollMax = listel.scrollHeight - listel.clientHeight;
+      const visibleMin = listel.scrollTop / listel.scrollHeight;
+      const visibleMax = (listel.clientHeight + listel.scrollTop) / listel.scrollHeight;
+      if (scrollPercent > visibleMax || scrollPercent < visibleMin) {
+        listel.scrollTop = scrollMax * scrollPercent;
+      }
     },
     onKeyEnter() {
       if (!this.listOpen) {
         this.listOpen = true;
+        this.searchText = '';
         return;
       }
       let item;

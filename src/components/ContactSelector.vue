@@ -106,7 +106,7 @@ h1 {
 }
 
 .root {
-  @apply .flex-1 .mt-12 .text-right;
+  @apply .mt-12 .text-right;
 
   width: 32rem;
   max-width: calc(100vw - 18rem);
