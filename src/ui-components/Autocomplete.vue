@@ -44,7 +44,7 @@ export default {
       this.listOpen = true;
     },
     onBlur() {
-      this.closeList();
+      setTimeout(this.closeList, 100);
     },
     onKeyUp() {
       this.selectedIndex = ((this.selectedIndex - 1) + this.itemNo) % this.itemNo;
