@@ -23,7 +23,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 TODO:
 
 - provide contact selector data with vuex
-- provide item renderer to the list [DONE]
+- ~~provide item renderer to the list [DONE]~~
 - display list of top of other elements so that it's rendered outside overflow hidden containers around the input
 - list position based on screen realestate below or above the input
 - write tests
