@@ -1,6 +1,8 @@
 # vueplay
 > This might grow into a collection of vue components
 
+demo: https://vueplay.surge.sh
+
 ## Build Setup
 
 ```bash
