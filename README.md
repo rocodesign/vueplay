@@ -1,6 +1,5 @@
-# radix-ac
-
-> A Vue.js project
+# vueplay
+> This might grow into a collection of vue components
 
 ## Build Setup
 
@@ -18,7 +17,9 @@ yarn build
 yarn build --report
 ```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+Autocomplete component
 
 TODO:
 
